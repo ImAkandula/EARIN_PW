@@ -24,8 +24,8 @@ def newton_method_with_tracking(initial_guess, alpha, tol=1e-6, max_iter=1000):
         grad = gradient(x[0], x[1])
         hess = hessian(x[0], x[1])
         if np.linalg.det(hess) == 0:
-            print(f"Hessian singular at iteration {i} for initial {initial_guess}")
-            break
+            print(f"Hessian is not invertible at iteration {i} for initial {initial_guess}")
+            return None, num_iter, np.array(path)
         delta = np.linalg.solve(hess, grad)
         x_new = x - alpha * delta
         path.append(x_new.copy())
@@ -41,23 +41,23 @@ def visualize(results):
     X, Y = np.meshgrid(X, Y)
     Z = function(X, Y)
 
-    # Create figure with space for the 3D plot and the text box
+    
     fig = plt.figure(figsize=(18, 10))
-    ax = fig.add_axes([0.05, 0.1, 0.65, 0.8], projection='3d')  # Main plot area
-    ax_text = fig.add_axes([0.72, 0.1, 0.25, 0.8])  # Text details box
+    ax = fig.add_axes([0.05, 0.1, 0.65, 0.8], projection='3d')  
+    ax_text = fig.add_axes([0.72, 0.1, 0.25, 0.8])  
     ax_text.axis('off')
 
-    # Light plot of the function surface
+    
     surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm, edgecolor='none', alpha=0.3)
 
-    # Z = 0 plane
+    
     zero_plane = np.zeros_like(Z)
     ax.plot_surface(X, Y, zero_plane, color='gray', alpha=0.2)
 
-    # Vibrant colors for iteration paths
+    
     path_colors = ['blue', 'green', 'orange', 'purple', 'crimson', 'magenta', 'darkcyan', 'darkred', 'darkblue']
 
-    # Prepare text for the side box
+    
     details_text = "Newton's Method Details:\n"
     details_text += "{:<10} {:<20} {:<25} {}\n".format("Test", "Iterations", "Converged (x, y)", "Z-Value")
 
@@ -67,25 +67,25 @@ def visualize(results):
         final = path[-1]
         z_path = function(path[:, 0], path[:, 1])
 
-        # Plot each iteration jump as a thick, visible line
+        
         ax.plot(path[:, 0], path[:, 1], z_path,
                 color=path_colors[idx % len(path_colors)],
                 linewidth=2.5,
                 label=f"Path {idx+1}")
 
-        # Scatter the initial guess
+        
         ax.scatter(initial[0], initial[1], function(initial[0], initial[1]),
                    color='black', s=80, marker='o', label=f"Start {idx+1}")
 
-        # Scatter iteration points
+        
         ax.scatter(path[:, 0], path[:, 1], z_path,
                    color=path_colors[idx % len(path_colors)], s=40, alpha=0.8)
 
-        # Scatter the final convergence point
+        
         ax.scatter(final[0], final[1], function(final[0], final[1]),
                    color='yellow', edgecolor='black', s=120, marker='X', label=f"Converged {idx+1}")
 
-        # Add to the details text
+        
         details_text += "{:<10} {:<20} ({: .3f}, {: .3f})       {: .3f}\n".format(
             idx+1, result['iterations'], final[0], final[1], function(final[0], final[1])
         )
@@ -96,12 +96,12 @@ def visualize(results):
     ax.set_zlabel('Z-axis')
     fig.colorbar(surf, ax=ax, shrink=0.5, aspect=5)
 
-    # Plot the text box
+    
     ax_text.text(0, 1, details_text, fontsize=10, verticalalignment='top', family='monospace')
 
     plt.show()
 
-# Test cases
+
 test_cases = [
     ([2.0, 2.0], 0.1),
     ([-4.0, -4.0], 0.05),
@@ -110,7 +110,9 @@ test_cases = [
     ([0.5, 0.5], 0.1),
     ([0, 5], 0.1),
     ([4.5, -4.5], 0.1),
-    ([-3, 3], 0.1)
+    ([-3, 3], 0.1),
+    ([-3, 3], 0.5),
+    ([-3, 3], 1)
 ]
 
 # Run Newton's method and collect results
@@ -123,6 +125,28 @@ for initial_guess, learning_rate in test_cases:
         'iterations': iterations,
         'path': path
     })
+
+
+
+# Print test cases and results in the console
+print("\nNewton's Method Results Summary:\n")
+print("{:<10} {:<25} {:<15} {:<30} {}".format("Test", "Initial Guess (x, y)", "Iterations", "Converged (x, y)", "Z-Value"))
+
+for idx, result in enumerate(results):
+    initial = result['initial']
+    final = result['minimum']
+    iterations = result['iterations']
+
+    if final is None:
+        print("{:<10} ({: .4f}, {: .4f})      {:<15} {:<30} {}".format(
+            idx + 1, initial[0], initial[1], iterations,
+            "Hessian not invertible", "N/A"))
+    else:
+        z_value = function(final[0], final[1])
+        print("{:<10} ({: .4f}, {: .4f})      {:<15} ({: .4f}, {: .4f})      {: .4f}".format(
+            idx + 1, initial[0], initial[1], iterations, final[0], final[1], z_value))
+
+
 
 # Visualize everything with side details
 visualize(results)
