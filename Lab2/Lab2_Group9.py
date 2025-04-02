@@ -67,7 +67,34 @@ class CSP:
                 del assignment[var]
         return None
 
+    def is_valid_puzzle(self, puzzle):
+        def has_duplicates(block):
+            nums = [num for num in block if num != 0]
+            return len(nums) != len(set(nums))
+
+        # Check rows
+        for row in puzzle:
+            if has_duplicates(row):
+                return False
+
+        # Check columns
+        for col in zip(*puzzle):
+            if has_duplicates(col):
+                return False
+
+        # Check 3x3 boxes
+        for box_x in range(0, 9, 3):
+            for box_y in range(0, 9, 3):
+                box = [puzzle[i][j] for i in range(box_x, box_x+3) for j in range(box_y, box_y+3)]
+                if has_duplicates(box):
+                    return False
+
+        return True
+
     def solve(self):
+        if not self.is_valid_puzzle(puzzle):
+            print("Incorrect puzzle")
+            return None
         assignment = {}
         self.solution = self.backtrack(assignment)
         return self.solution
@@ -75,7 +102,7 @@ class CSP:
 
 # ---------- SETUP -------------
 puzzle = [[5, 3, 0, 0, 7, 0, 0, 0, 0],
-          [0, 5, 0, 1, 0, 5, 0, 0, 0],
+          [0, 7, 0, 1, 0, 5, 0, 0, 0],
           [0, 9, 8, 0, 0, 0, 0, 6, 0],
           [0, 0, 0, 0, 0, 3, 0, 0, 1],
           [0, 0, 0, 0, 0, 0, 0, 0, 6],
