@@ -1,0 +1,16 @@
+=== Experiment 2: Randomness in Genetic Algorithm ===
+
+1. Using best parameters, 5 seeds:
+  Seed 1 -> Fitness: 1.130604e+00, Solution: (1.7374, 2.2358)
+  Seed 42 -> Fitness: 7.627893e-04, Solution: (0.9986, 3.0134)
+  Seed 100 -> Fitness: 1.230969e-03, Solution: (1.0227, 2.9740)
+  Seed 2024 -> Fitness: 7.939886e-04, Solution: (1.0210, 2.9840)
+  Seed 999 -> Fitness: 8.797266e-02, Solution: (0.7811, 3.1937)
+
+Mean Fitness: 2.442728e-01
+Std Dev Fitness: 4.444459e-01
+
+2. Reduced Population Sizes:
+  Population: 25 -> Mean: 3.714608e-01, Std Dev: 7.237771e-01
+  Population: 12 -> Mean: 1.274517e+00, Std Dev: 1.696273e+00
+  Population: 5 -> Mean: 2.583346e+01, Std Dev: 4.831068e+01

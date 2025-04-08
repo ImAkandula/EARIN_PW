@@ -1,0 +1,648 @@
+Test #1
+  Population size: 50
+  Mutation rate: 0.1
+  Mutation strength: 0.05
+  Crossover rate: 0.7
+  Seed: 42
+  Best solution: (1.0209, 2.9976)
+  Best fitness: 1.824996e-03
+----------------------------------------
+Test #2
+  Population size: 50
+  Mutation rate: 0.1
+  Mutation strength: 0.05
+  Crossover rate: 0.7
+  Seed: 1
+  Best solution: (1.9584, 2.0298)
+  Best fitness: 1.860446e+00
+----------------------------------------
+Test #3
+  Population size: 50
+  Mutation rate: 0.1
+  Mutation strength: 0.05
+  Crossover rate: 0.7
+  Seed: 123
+  Best solution: (1.1755, 2.7043)
+  Best fitness: 1.760020e-01
+----------------------------------------
+Test #4
+  Population size: 50
+  Mutation rate: 0.1
+  Mutation strength: 0.05
+  Crossover rate: 0.9
+  Seed: 42
+  Best solution: (1.0495, 2.9573)
+  Best fitness: 4.458576e-03
+----------------------------------------
+Test #5
+  Population size: 50
+  Mutation rate: 0.1
+  Mutation strength: 0.05
+  Crossover rate: 0.9
+  Seed: 1
+  Best solution: (2.0939, 2.1034)
+  Best fitness: 2.156384e+00
+----------------------------------------
+Test #6
+  Population size: 50
+  Mutation rate: 0.1
+  Mutation strength: 0.05
+  Crossover rate: 0.9
+  Seed: 123
+  Best solution: (1.2269, 2.6923)
+  Best fitness: 1.723004e-01
+----------------------------------------
+Test #7
+  Population size: 50
+  Mutation rate: 0.1
+  Mutation strength: 0.1
+  Crossover rate: 0.7
+  Seed: 42
+  Best solution: (0.9735, 3.0247)
+  Best fitness: 1.329661e-03
+----------------------------------------
+Test #8
+  Population size: 50
+  Mutation rate: 0.1
+  Mutation strength: 0.1
+  Crossover rate: 0.7
+  Seed: 1
+  Best solution: (1.2355, 2.6684)
+  Best fitness: 2.023313e-01
+----------------------------------------
+Test #9
+  Population size: 50
+  Mutation rate: 0.1
+  Mutation strength: 0.1
+  Crossover rate: 0.7
+  Seed: 123
+  Best solution: (1.0539, 2.9266)
+  Best fitness: 9.801965e-03
+----------------------------------------
+Test #10
+  Population size: 50
+  Mutation rate: 0.1
+  Mutation strength: 0.1
+  Crossover rate: 0.9
+  Seed: 42
+  Best solution: (0.9577, 3.0511)
+  Best fitness: 4.710509e-03
+----------------------------------------
+Test #11
+  Population size: 50
+  Mutation rate: 0.1
+  Mutation strength: 0.1
+  Crossover rate: 0.9
+  Seed: 1
+  Best solution: (1.7897, 2.2266)
+  Best fitness: 1.222790e+00
+----------------------------------------
+Test #12
+  Population size: 50
+  Mutation rate: 0.1
+  Mutation strength: 0.1
+  Crossover rate: 0.9
+  Seed: 123
+  Best solution: (1.2104, 2.8113)
+  Best fitness: 8.177688e-02
+----------------------------------------
+Test #13
+  Population size: 50
+  Mutation rate: 0.3
+  Mutation strength: 0.05
+  Crossover rate: 0.7
+  Seed: 42
+  Best solution: (0.9932, 3.0060)
+  Best fitness: 8.414653e-05
+----------------------------------------
+Test #14
+  Population size: 50
+  Mutation rate: 0.3
+  Mutation strength: 0.05
+  Crossover rate: 0.7
+  Seed: 1
+  Best solution: (1.4981, 2.4830)
+  Best fitness: 5.167640e-01
+----------------------------------------
+Test #15
+  Population size: 50
+  Mutation rate: 0.3
+  Mutation strength: 0.05
+  Crossover rate: 0.7
+  Seed: 123
+  Best solution: (1.0580, 2.9328)
+  Best fitness: 8.224440e-03
+----------------------------------------
+Test #16
+  Population size: 50
+  Mutation rate: 0.3
+  Mutation strength: 0.05
+  Crossover rate: 0.9
+  Seed: 42
+  Best solution: (1.0396, 2.9892)
+  Best fitness: 5.005873e-03
+----------------------------------------
+Test #17
+  Population size: 50
+  Mutation rate: 0.3
+  Mutation strength: 0.05
+  Crossover rate: 0.9
+  Seed: 1
+  Best solution: (2.0101, 2.1103)
+  Best fitness: 1.869737e+00
+----------------------------------------
+Test #18
+  Population size: 50
+  Mutation rate: 0.3
+  Mutation strength: 0.05
+  Crossover rate: 0.9
+  Seed: 123
+  Best solution: (1.1758, 2.8407)
+  Best fitness: 5.735725e-02
+----------------------------------------
+Test #19
+  Population size: 50
+  Mutation rate: 0.3
+  Mutation strength: 0.1
+  Crossover rate: 0.7
+  Seed: 42
+  Best solution: (1.0334, 2.9814)
+  Best fitness: 2.333126e-03
+----------------------------------------
+Test #20
+  Population size: 50
+  Mutation rate: 0.3
+  Mutation strength: 0.1
+  Crossover rate: 0.7
+  Seed: 1
+  Best solution: (1.0566, 2.9029)
+  Best fitness: 1.916334e-02
+----------------------------------------
+Test #21
+  Population size: 50
+  Mutation rate: 0.3
+  Mutation strength: 0.1
+  Crossover rate: 0.7
+  Seed: 123
+  Best solution: (1.0678, 2.9464)
+  Best fitness: 8.264566e-03
+----------------------------------------
+Test #22
+  Population size: 50
+  Mutation rate: 0.3
+  Mutation strength: 0.1
+  Crossover rate: 0.9
+  Seed: 42
+  Best solution: (0.9912, 3.0220)
+  Best fitness: 1.260149e-03
+----------------------------------------
+Test #23
+  Population size: 50
+  Mutation rate: 0.3
+  Mutation strength: 0.1
+  Crossover rate: 0.9
+  Seed: 1
+  Best solution: (1.7955, 2.2109)
+  Best fitness: 1.255605e+00
+----------------------------------------
+Test #24
+  Population size: 50
+  Mutation rate: 0.3
+  Mutation strength: 0.1
+  Crossover rate: 0.9
+  Seed: 123
+  Best solution: (1.0023, 2.9793)
+  Best fitness: 1.792957e-03
+----------------------------------------
+Test #25
+  Population size: 25
+  Mutation rate: 0.1
+  Mutation strength: 0.05
+  Crossover rate: 0.7
+  Seed: 42
+  Best solution: (1.0342, 3.0008)
+  Best fitness: 6.080720e-03
+----------------------------------------
+Test #26
+  Population size: 25
+  Mutation rate: 0.1
+  Mutation strength: 0.05
+  Crossover rate: 0.7
+  Seed: 1
+  Best solution: (1.2381, 2.7370)
+  Best fitness: 1.283370e-01
+----------------------------------------
+Test #27
+  Population size: 25
+  Mutation rate: 0.1
+  Mutation strength: 0.05
+  Crossover rate: 0.7
+  Seed: 123
+  Best solution: (0.9883, 2.9511)
+  Best fitness: 1.719164e-02
+----------------------------------------
+Test #28
+  Population size: 25
+  Mutation rate: 0.1
+  Mutation strength: 0.05
+  Crossover rate: 0.9
+  Seed: 42
+  Best solution: (1.0193, 3.0213)
+  Best fitness: 7.388538e-03
+----------------------------------------
+Test #29
+  Population size: 25
+  Mutation rate: 0.1
+  Mutation strength: 0.05
+  Crossover rate: 0.9
+  Seed: 1
+  Best solution: (1.1272, 2.7413)
+  Best fitness: 1.522576e-01
+----------------------------------------
+Test #30
+  Population size: 25
+  Mutation rate: 0.1
+  Mutation strength: 0.05
+  Crossover rate: 0.9
+  Seed: 123
+  Best solution: (0.5915, 3.3678)
+  Best fitness: 3.087928e-01
+----------------------------------------
+Test #31
+  Population size: 25
+  Mutation rate: 0.1
+  Mutation strength: 0.1
+  Crossover rate: 0.7
+  Seed: 42
+  Best solution: (1.0356, 2.9650)
+  Best fitness: 2.494879e-03
+----------------------------------------
+Test #32
+  Population size: 25
+  Mutation rate: 0.1
+  Mutation strength: 0.1
+  Crossover rate: 0.7
+  Seed: 1
+  Best solution: (1.1709, 2.8681)
+  Best fitness: 5.266543e-02
+----------------------------------------
+Test #33
+  Population size: 25
+  Mutation rate: 0.1
+  Mutation strength: 0.1
+  Crossover rate: 0.7
+  Seed: 123
+  Best solution: (1.0136, 2.9826)
+  Best fitness: 5.482374e-04
+----------------------------------------
+Test #34
+  Population size: 25
+  Mutation rate: 0.1
+  Mutation strength: 0.1
+  Crossover rate: 0.9
+  Seed: 42
+  Best solution: (1.0967, 2.9046)
+  Best fitness: 1.845443e-02
+----------------------------------------
+Test #35
+  Population size: 25
+  Mutation rate: 0.1
+  Mutation strength: 0.1
+  Crossover rate: 0.9
+  Seed: 1
+  Best solution: (1.0899, 2.9031)
+  Best fitness: 1.765636e-02
+----------------------------------------
+Test #36
+  Population size: 25
+  Mutation rate: 0.1
+  Mutation strength: 0.1
+  Crossover rate: 0.9
+  Seed: 123
+  Best solution: (0.8822, 3.1647)
+  Best fitness: 4.983552e-02
+----------------------------------------
+Test #37
+  Population size: 25
+  Mutation rate: 0.3
+  Mutation strength: 0.05
+  Crossover rate: 0.7
+  Seed: 42
+  Best solution: (1.1209, 2.9204)
+  Best fitness: 2.777032e-02
+----------------------------------------
+Test #38
+  Population size: 25
+  Mutation rate: 0.3
+  Mutation strength: 0.05
+  Crossover rate: 0.7
+  Seed: 1
+  Best solution: (1.1558, 2.8384)
+  Best fitness: 5.051246e-02
+----------------------------------------
+Test #39
+  Population size: 25
+  Mutation rate: 0.3
+  Mutation strength: 0.05
+  Crossover rate: 0.7
+  Seed: 123
+  Best solution: (0.9909, 3.0113)
+  Best fitness: 2.279466e-04
+----------------------------------------
+Test #40
+  Population size: 25
+  Mutation rate: 0.3
+  Mutation strength: 0.05
+  Crossover rate: 0.9
+  Seed: 42
+  Best solution: (0.9571, 3.0176)
+  Best fitness: 4.695577e-03
+----------------------------------------
+Test #41
+  Population size: 25
+  Mutation rate: 0.3
+  Mutation strength: 0.05
+  Crossover rate: 0.9
+  Seed: 1
+  Best solution: (1.3350, 2.7597)
+  Best fitness: 2.058449e-01
+----------------------------------------
+Test #42
+  Population size: 25
+  Mutation rate: 0.3
+  Mutation strength: 0.05
+  Crossover rate: 0.9
+  Seed: 123
+  Best solution: (0.9870, 3.0049)
+  Best fitness: 4.534993e-04
+----------------------------------------
+Test #43
+  Population size: 25
+  Mutation rate: 0.3
+  Mutation strength: 0.1
+  Crossover rate: 0.7
+  Seed: 42
+  Best solution: (1.0149, 2.9933)
+  Best fitness: 5.373340e-04
+----------------------------------------
+Test #44
+  Population size: 25
+  Mutation rate: 0.3
+  Mutation strength: 0.1
+  Crossover rate: 0.7
+  Seed: 1
+  Best solution: (1.0098, 2.9666)
+  Best fitness: 3.422249e-03
+----------------------------------------
+Test #45
+  Population size: 25
+  Mutation rate: 0.3
+  Mutation strength: 0.1
+  Crossover rate: 0.7
+  Seed: 123
+  Best solution: (0.9717, 3.0254)
+  Best fitness: 1.477899e-03
+----------------------------------------
+Test #46
+  Population size: 25
+  Mutation rate: 0.3
+  Mutation strength: 0.1
+  Crossover rate: 0.9
+  Seed: 42
+  Best solution: (0.9525, 3.0476)
+  Best fitness: 4.522989e-03
+----------------------------------------
+Test #47
+  Population size: 25
+  Mutation rate: 0.3
+  Mutation strength: 0.1
+  Crossover rate: 0.9
+  Seed: 1
+  Best solution: (1.0682, 2.9444)
+  Best fitness: 8.376425e-03
+----------------------------------------
+Test #48
+  Population size: 25
+  Mutation rate: 0.3
+  Mutation strength: 0.1
+  Crossover rate: 0.9
+  Seed: 123
+  Best solution: (0.9875, 3.0326)
+  Best fitness: 2.832032e-03
+----------------------------------------
+Test #49
+  Population size: 10
+  Mutation rate: 0.1
+  Mutation strength: 0.05
+  Crossover rate: 0.7
+  Seed: 42
+  Best solution: (2.2262, 3.2085)
+  Best fitness: 9.780306e+00
+----------------------------------------
+Test #50
+  Population size: 10
+  Mutation rate: 0.1
+  Mutation strength: 0.05
+  Crossover rate: 0.7
+  Seed: 1
+  Best solution: (1.4654, 2.4089)
+  Best fitness: 6.291857e-01
+----------------------------------------
+Test #51
+  Population size: 10
+  Mutation rate: 0.1
+  Mutation strength: 0.05
+  Crossover rate: 0.7
+  Seed: 123
+  Best solution: (0.0576, 1.5434)
+  Best fitness: 2.602894e+01
+----------------------------------------
+Test #52
+  Population size: 10
+  Mutation rate: 0.1
+  Mutation strength: 0.05
+  Crossover rate: 0.9
+  Seed: 42
+  Best solution: (2.2228, 1.9267)
+  Best fitness: 2.736688e+00
+----------------------------------------
+Test #53
+  Population size: 10
+  Mutation rate: 0.1
+  Mutation strength: 0.05
+  Crossover rate: 0.9
+  Seed: 1
+  Best solution: (1.5106, 2.2744)
+  Best fitness: 9.721333e-01
+----------------------------------------
+Test #54
+  Population size: 10
+  Mutation rate: 0.1
+  Mutation strength: 0.05
+  Crossover rate: 0.9
+  Seed: 123
+  Best solution: (0.9260, 0.6014)
+  Best fitness: 3.021341e+01
+----------------------------------------
+Test #55
+  Population size: 10
+  Mutation rate: 0.1
+  Mutation strength: 0.1
+  Crossover rate: 0.7
+  Seed: 42
+  Best solution: (1.7906, 3.0696)
+  Best fitness: 3.590013e+00
+----------------------------------------
+Test #56
+  Population size: 10
+  Mutation rate: 0.1
+  Mutation strength: 0.1
+  Crossover rate: 0.7
+  Seed: 1
+  Best solution: (1.4216, 2.6472)
+  Best fitness: 3.212219e-01
+----------------------------------------
+Test #57
+  Population size: 10
+  Mutation rate: 0.1
+  Mutation strength: 0.1
+  Crossover rate: 0.7
+  Seed: 123
+  Best solution: (0.1391, 1.4871)
+  Best fitness: 2.556986e+01
+----------------------------------------
+Test #58
+  Population size: 10
+  Mutation rate: 0.1
+  Mutation strength: 0.1
+  Crossover rate: 0.9
+  Seed: 42
+  Best solution: (2.2320, 2.0065)
+  Best fitness: 2.732233e+00
+----------------------------------------
+Test #59
+  Population size: 10
+  Mutation rate: 0.1
+  Mutation strength: 0.1
+  Crossover rate: 0.9
+  Seed: 1
+  Best solution: (1.5021, 2.4162)
+  Best fitness: 6.195699e-01
+----------------------------------------
+Test #60
+  Population size: 10
+  Mutation rate: 0.1
+  Mutation strength: 0.1
+  Crossover rate: 0.9
+  Seed: 123
+  Best solution: (1.0163, 0.6280)
+  Best fitness: 2.782309e+01
+----------------------------------------
+Test #61
+  Population size: 10
+  Mutation rate: 0.3
+  Mutation strength: 0.05
+  Crossover rate: 0.7
+  Seed: 42
+  Best solution: (2.6063, 1.5390)
+  Best fitness: 4.799396e+00
+----------------------------------------
+Test #62
+  Population size: 10
+  Mutation rate: 0.3
+  Mutation strength: 0.05
+  Crossover rate: 0.7
+  Seed: 1
+  Best solution: (1.3383, 2.4081)
+  Best fitness: 7.221100e-01
+----------------------------------------
+Test #63
+  Population size: 10
+  Mutation rate: 0.3
+  Mutation strength: 0.05
+  Crossover rate: 0.7
+  Seed: 123
+  Best solution: (1.8163, 0.8201)
+  Best fitness: 1.285531e+01
+----------------------------------------
+Test #64
+  Population size: 10
+  Mutation rate: 0.3
+  Mutation strength: 0.05
+  Crossover rate: 0.9
+  Seed: 42
+  Best solution: (2.2962, 2.8292)
+  Best fitness: 6.774895e+00
+----------------------------------------
+Test #65
+  Population size: 10
+  Mutation rate: 0.3
+  Mutation strength: 0.05
+  Crossover rate: 0.9
+  Seed: 1
+  Best solution: (1.2771, 2.7502)
+  Best fitness: 1.421798e-01
+----------------------------------------
+Test #66
+  Population size: 10
+  Mutation rate: 0.3
+  Mutation strength: 0.05
+  Crossover rate: 0.9
+  Seed: 123
+  Best solution: (0.7948, 1.2886)
+  Best fitness: 1.766335e+01
+----------------------------------------
+Test #67
+  Population size: 10
+  Mutation rate: 0.3
+  Mutation strength: 0.1
+  Crossover rate: 0.7
+  Seed: 42
+  Best solution: (1.3529, 2.5572)
+  Best fitness: 3.529709e-01
+----------------------------------------
+Test #68
+  Population size: 10
+  Mutation rate: 0.3
+  Mutation strength: 0.1
+  Crossover rate: 0.7
+  Seed: 1
+  Best solution: (1.3405, 2.6634)
+  Best fitness: 2.292942e-01
+----------------------------------------
+Test #69
+  Population size: 10
+  Mutation rate: 0.3
+  Mutation strength: 0.1
+  Crossover rate: 0.7
+  Seed: 123
+  Best solution: (2.3370, 1.5644)
+  Best fitness: 3.887491e+00
+----------------------------------------
+Test #70
+  Population size: 10
+  Mutation rate: 0.3
+  Mutation strength: 0.1
+  Crossover rate: 0.9
+  Seed: 42
+  Best solution: (1.3469, 2.7388)
+  Best fitness: 2.180003e-01
+----------------------------------------
+Test #71
+  Population size: 10
+  Mutation rate: 0.3
+  Mutation strength: 0.1
+  Crossover rate: 0.9
+  Seed: 1
+  Best solution: (1.1038, 2.8649)
+  Best fitness: 3.292846e-02
+----------------------------------------
+Test #72
+  Population size: 10
+  Mutation rate: 0.3
+  Mutation strength: 0.1
+  Crossover rate: 0.9
+  Seed: 123
+  Best solution: (1.3649, 2.3777)
+  Best fitness: 7.854848e-01
+----------------------------------------
