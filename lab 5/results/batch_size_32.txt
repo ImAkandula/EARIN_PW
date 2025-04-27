@@ -1,0 +1,18 @@
+Experiment Configuration:
+learning_rate: 0.01
+batch_size: 32
+hidden_layers: [128, 64]
+activation: ReLU
+loss_function: CrossEntropyLoss
+
+Training Losses per Epoch:
+2.0173, 1.1530, 0.8447, 0.7347, 0.6729
+
+Validation Losses per Epoch:
+1.5119, 0.9555, 0.7788, 0.7104, 0.6622
+
+Training Accuracies per Epoch:
+0.3298, 0.6138, 0.6853, 0.7281, 0.7552
+
+Validation Accuracies per Epoch:
+0.5232, 0.6411, 0.7167, 0.7330, 0.7616
