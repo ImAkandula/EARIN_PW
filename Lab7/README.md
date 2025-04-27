@@ -1,4 +1,4 @@
-Exercise 7 – Logic and Inference (Variant 4)
+Laboratory 7 (Variant 4)
 
 Task
 
@@ -21,18 +21,18 @@ X = 699.
 How to Run
 
 1. Go to https://swish.swi-prolog.org/
-2. Copy and paste the contents of the file lab7.pl.
+2. Copy and paste the contents of the file words_to_numbers.pl
 3. To test the program, run queries like the examples shown above.
 
 Alternatively, if you have SWI-Prolog installed locally:
 - Open terminal.
-- Run: swipl lab7.pl
+- Run: swipl words_to_numbers.pl
 - Then run your queries in the Prolog console.
 
 Files Included
 
-- lab7.pl : The Prolog source code implementing Variant 4
-- report.md : Report describing logic, components, and challenges
+- words_to_numbers.pl : The Prolog source code implementing Variant 4
+- Lab7_Report - Group 9.pdf: Report describing logic, components, and challenges
 - README.md : Instructions for running the code and example queries
 
 Notes
