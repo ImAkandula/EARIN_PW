@@ -3,18 +3,47 @@ import torch
 import torch.cuda.amp as amp
 from torch.utils.data import Dataset, DataLoader
 from transformers import BertTokenizer, BertForSequenceClassification, AdamW
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import LabelEncoder
 from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import numpy as np
 import argparse
-from tqdm import tqdm  # Progress bar
+from tqdm import tqdm
+import re
 
+def clean_text(text):
+    # Remove non-ASCII junk characters (like emojis)
+    text = re.sub(r'[^\x00-\x7F]+', ' ', text)
+    text = re.sub(r'\s+', ' ', text).strip()
+    return text
+
+def load_data(file_path):
+    texts, labels = [], []
+    with open(file_path, 'r', encoding='utf-8') as f:
+        for line in f:
+            if line.strip():
+                item = json.loads(line)
+                headline = clean_text(item['headline'])
+                short_desc = clean_text(item.get('short_description', ''))  # Use empty if missing
+                combined_text = headline + " " + short_desc
+                texts.append(combined_text.strip())
+                labels.append(item['category'])
+    return texts, labels
+
+
+def encode_labels(train_labels, test_labels):
+    encoder = LabelEncoder()
+    encoder.fit(train_labels)
+    train_encoded = encoder.transform(train_labels)
+    test_encoded = encoder.transform(test_labels)
+    label2id = {label: idx for idx, label in enumerate(encoder.classes_)}
+    id2label = {idx: label for label, idx in label2id.items()}
+    return train_encoded, test_encoded, label2id, id2label
 
 class NewsDataset(Dataset):
-    def __init__(self, texts, labels, tokenizer, max_len=128):
+    def __init__(self, texts, labels, tokenizer, max_len=512):
         self.texts = texts
         self.labels = labels
         self.tokenizer = tokenizer
@@ -41,29 +70,7 @@ class NewsDataset(Dataset):
             'labels': torch.tensor(label, dtype=torch.long)
         }
 
-
-def load_data(file_path):
-    texts, labels = [], []
-    with open(file_path, 'r', encoding='utf-8') as f:
-        for line in f:
-            if line.strip():
-                item = json.loads(line)
-                texts.append(item['headline'])
-                labels.append(item['category'])
-    return texts, labels
-
-
-def encode_labels(train_labels, test_labels):
-    encoder = LabelEncoder()
-    encoder.fit(train_labels)
-    train_encoded = encoder.transform(train_labels)
-    test_encoded = encoder.transform(test_labels)
-    label2id = {label: idx for idx, label in enumerate(encoder.classes_)}
-    id2label = {idx: label for label, idx in label2id.items()}
-    return train_encoded, test_encoded, label2id, id2label
-
-
-def train_bert(train_file, test_file, model_dir='saved_bert_model', epochs=3, batch_size=16, max_len=128, lr=2e-5):
+def train_bert(train_file, test_file, model_dir='saved_bert_model', epochs=2, batch_size=16, max_len=512, lr=2e-5):
     print("Loading training data...")
     train_texts, train_labels = load_data(train_file)
     print(f"Training articles: {len(train_texts)}")
@@ -122,7 +129,6 @@ def train_bert(train_file, test_file, model_dir='saved_bert_model', epochs=3, ba
         print(f"Epoch {epoch+1}/{epochs} — Training loss: {avg_loss:.4f}")
         epoch_train_losses.append(avg_loss)
 
-        # Validate on test set after each epoch to track accuracy curve
         model.eval()
         preds, true_labels = [], []
         with torch.no_grad():
@@ -142,14 +148,12 @@ def train_bert(train_file, test_file, model_dir='saved_bert_model', epochs=3, ba
         print(f"Epoch {epoch+1}/{epochs} — Validation accuracy: {acc:.4f}")
         epoch_val_accuracies.append(acc)
 
-    # Save model and tokenizer
     model.save_pretrained(model_dir)
     tokenizer.save_pretrained(model_dir)
     with open(f'{model_dir}/label2id.json', 'w') as f:
         json.dump(label2id, f)
     print(f"Model saved to {model_dir}")
 
-    # Final evaluation & embeddings extraction
     print("Final evaluation on test set...")
     model.eval()
     preds, true_labels = [], []
@@ -161,7 +165,6 @@ def train_bert(train_file, test_file, model_dir='saved_bert_model', epochs=3, ba
             attention_mask = batch['attention_mask'].to(device, non_blocking=True)
             labels = batch['labels'].to(device, non_blocking=True)
 
-            # Get BERT embeddings (last hidden state CLS token)
             outputs = model.bert(input_ids=input_ids, attention_mask=attention_mask)
             cls_embeddings = outputs.last_hidden_state[:, 0, :].cpu().numpy()
             embeddings_list.append(cls_embeddings)
@@ -175,11 +178,12 @@ def train_bert(train_file, test_file, model_dir='saved_bert_model', epochs=3, ba
 
     acc = accuracy_score(true_labels, preds)
     print(f"Test set accuracy: {acc:.4f}")
+    print("Classification report:")
+    print(classification_report(true_labels, preds, target_names=[id2label[i] for i in range(len(id2label))]))
 
     embeddings = np.vstack(embeddings_list)
     labels_np = np.hstack(labels_list)
 
-    # Plot training curves
     plt.figure(figsize=(12,5))
     plt.subplot(1,2,1)
     plt.plot(range(1, epochs+1), epoch_train_losses, marker='o')
@@ -194,7 +198,6 @@ def train_bert(train_file, test_file, model_dir='saved_bert_model', epochs=3, ba
     plt.tight_layout()
     plt.show()
 
-    # t-SNE plot
     tsne = TSNE(n_components=2, random_state=42)
     embeddings_tsne = tsne.fit_transform(embeddings)
     plt.figure(figsize=(8,8))
@@ -203,7 +206,6 @@ def train_bert(train_file, test_file, model_dir='saved_bert_model', epochs=3, ba
     plt.title("t-SNE of BERT CLS Embeddings")
     plt.show()
 
-    # PCA plot
     pca = PCA(n_components=2)
     embeddings_pca = pca.fit_transform(embeddings)
     plt.figure(figsize=(8,8))
@@ -212,12 +214,7 @@ def train_bert(train_file, test_file, model_dir='saved_bert_model', epochs=3, ba
     plt.title("PCA of BERT CLS Embeddings")
     plt.show()
 
-
 def predict(text, model_dir='saved_bert_model'):
-    import torch
-    from transformers import BertTokenizer, BertForSequenceClassification
-    import json
-
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = BertForSequenceClassification.from_pretrained(model_dir).to(device)
     tokenizer = BertTokenizer.from_pretrained(model_dir)
@@ -245,7 +242,6 @@ def predict(text, model_dir='saved_bert_model'):
         pred_label_id = torch.argmax(logits, dim=-1).item()
 
     return id2label[pred_label_id]
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train or predict news category with BERT")

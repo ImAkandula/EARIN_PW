@@ -12,7 +12,11 @@ def load_json_lines(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
         for line in f:
             entry = json.loads(line)
-            texts.append(entry['headline'])
+            # Combine headline and short_description
+            headline = entry.get('headline', '')
+            description = entry.get('short_description', '')
+            combined_text = f"{headline} {description}"
+            texts.append(combined_text)
             labels.append(entry['category'])
     return texts, labels
 
@@ -35,14 +39,26 @@ def main():
     test_texts = [preprocess_text(t) for t in tqdm(test_texts)]
 
     # TF-IDF Vectorizer setup
-    vectorizer = TfidfVectorizer(max_features=10000, ngram_range=(1,2))
+    vectorizer = TfidfVectorizer(
+    max_features=20000,
+    ngram_range=(1,2),
+    sublinear_tf=True,
+    min_df=3,
+    max_df=0.9
+)
     print("Fitting TF-IDF vectorizer and transforming train data...")
     X_train = vectorizer.fit_transform(train_texts)
     print("Transforming test data with TF-IDF vectorizer...")
     X_test = vectorizer.transform(test_texts)
 
     # Logistic Regression with class weight balanced
-    clf = LogisticRegression(max_iter=20000, class_weight='balanced', solver='liblinear', random_state=42)
+    clf = LogisticRegression(
+    max_iter=20000,
+    class_weight='balanced',
+    solver='liblinear',
+    C=0.5,
+    random_state=42
+)
 
     # Training progress: scikit-learn doesn't give progress natively,
     # but we can wrap fit in tqdm by splitting manually or just print before/after.
