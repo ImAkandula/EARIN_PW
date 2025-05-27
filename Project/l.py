@@ -2,11 +2,10 @@ import json
 import re
 from tqdm import tqdm
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.pipeline import FeatureUnion
-from sklearn.naive_bayes import MultinomialNB
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, accuracy_score
 
-# Load JSON Lines data
+# Load JSON Lines data loader (use if your JSON file has one JSON object per line)
 def load_json_lines(filepath):
     texts = []
     labels = []
@@ -29,9 +28,9 @@ def preprocess_text(text):
     return text
 
 def main():
-    # Load data
-    train_texts, train_labels = load_json_lines('datasets/2k.json')
-    test_texts, test_labels = load_json_lines('datasets/400.json')
+    # Load data (adjust file path & loader according to your file format)
+    train_texts, train_labels = load_json_lines('datasets/train_set.json')
+    test_texts, test_labels = load_json_lines('datasets/test_set.json')
 
     # Preprocess texts
     print("Preprocessing train data...")
@@ -39,39 +38,34 @@ def main():
     print("Preprocessing test data...")
     test_texts = [preprocess_text(t) for t in tqdm(test_texts)]
 
-    # Hybrid TF-IDF Vectorizer: char + word
-    char_vectorizer = TfidfVectorizer(
-        analyzer='char_wb',
-        max_features=20000,
-        ngram_range=(3, 5),
-        sublinear_tf=True,
-        min_df=3,
-        max_df=0.9
-    )
-
-    word_vectorizer = TfidfVectorizer(
-        analyzer='word',
+    # TF-IDF Vectorizer setup
+    vectorizer = TfidfVectorizer(
+        max_features=30000,
         ngram_range=(1, 3),
-        max_features=20000,
         sublinear_tf=True,
-        min_df=3,
+        stop_words='english',
+        lowercase=True,
+        min_df=1,
         max_df=0.7
-    )
-
-    vectorizer = FeatureUnion([
-        ("char", char_vectorizer),
-        ("word", word_vectorizer)
-    ])
-
-    print("Fitting vectorizer and transforming train data...")
+)
+    print("Fitting TF-IDF vectorizer and transforming train data...")
     X_train = vectorizer.fit_transform(train_texts)
-    print("Transforming test data...")
+    print("Transforming test data with TF-IDF vectorizer...")
     X_test = vectorizer.transform(test_texts)
 
-    # Initialize Multinomial Naive Bayes classifier
-    clf = MultinomialNB(alpha = 0.05)
+    # Logistic Regression with class weight balanced
+    clf = LogisticRegression(
+    max_iter=20000,
+    class_weight='balanced',  # Often better than None
 
-    print("Training Complement Naive Bayes model...")
+    solver="lbfgs",
+    C=5.0,
+    random_state=42
+)
+
+    # Training progress: scikit-learn doesn't give progress natively,
+    # but we can wrap fit in tqdm by splitting manually or just print before/after.
+    print("Training Logistic Regression model...")
     clf.fit(X_train, train_labels)
     print("Training completed.")
 

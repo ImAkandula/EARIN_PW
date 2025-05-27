@@ -1,26 +1,40 @@
 import json
 import re
+import warnings
+import time
 from tqdm import tqdm
+from collections import Counter
+
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import FeatureUnion
+from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import classification_report, accuracy_score
 
-# Load JSON Lines data loader (use if your JSON file has one JSON object per line)
+# Suppress specific sklearn warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+
+# Load JSON Lines file (one JSON object per line)
 def load_json_lines(filepath):
     texts = []
     labels = []
     with open(filepath, 'r', encoding='utf-8') as f:
         for line in f:
-            entry = json.loads(line)
-            # Combine headline and short_description
-            headline = entry.get('headline', '')
-            description = entry.get('short_description', '')
-            combined_text = f"{headline} {description}"
-            texts.append(combined_text)
-            labels.append(entry['category'])
+            try:
+                entry = json.loads(line)
+                headline = entry.get('headline', '')
+                description = entry.get('short_description', '')
+                label = entry.get('category')
+                if not label:
+                    continue  # Skip if label missing
+                combined_text = f"{headline} {description}"
+                texts.append(combined_text)
+                labels.append(label)
+            except json.JSONDecodeError:
+                continue  # Skip corrupted lines
     return texts, labels
 
-# Preprocess text: lowercase + remove non-alpha chars
+# Preprocess text: lowercase and remove non-alphabetic characters
 def preprocess_text(text):
     text = text.lower()
     text = re.sub(r'[^a-z\s]', ' ', text)
@@ -28,51 +42,79 @@ def preprocess_text(text):
     return text
 
 def main():
-    # Load data (adjust file path & loader according to your file format)
+    print("🔄 Loading dataset...")
     train_texts, train_labels = load_json_lines('datasets/train_set.json')
     test_texts, test_labels = load_json_lines('datasets/test_set.json')
 
-    # Preprocess texts
-    print("Preprocessing train data...")
+    print(f"✅ Training samples: {len(train_texts)} | Testing samples: {len(test_texts)}")
+    print(f"📊 Sample category counts: {Counter(train_labels).most_common(5)}")
+
+    # Preprocess text data
+    print("🧹 Preprocessing train data...")
     train_texts = [preprocess_text(t) for t in tqdm(train_texts)]
-    print("Preprocessing test data...")
+    print("🧹 Preprocessing test data...")
     test_texts = [preprocess_text(t) for t in tqdm(test_texts)]
 
-    # TF-IDF Vectorizer setup
-    vectorizer = TfidfVectorizer(
-    max_features=20000,
-    ngram_range=(1,2),
-    sublinear_tf=True,
-    min_df=3,
-    max_df=0.9
-)
-    print("Fitting TF-IDF vectorizer and transforming train data...")
+    # Encode string labels into integers
+    le = LabelEncoder()
+    y_train = le.fit_transform(train_labels)
+    y_test = le.transform(test_labels)
+
+    # TF-IDF vectorizers
+    char_vectorizer = TfidfVectorizer(
+        analyzer='char_wb',
+        ngram_range=(3, 7),
+        max_features=20000,
+        sublinear_tf=True,
+        min_df=3,
+        max_df=0.9
+    )
+
+    word_vectorizer = TfidfVectorizer(
+        analyzer='word',
+        ngram_range=(1, 2),
+        max_features=20000,
+        sublinear_tf=True,
+        min_df=3,
+        max_df=0.9
+    )
+
+    # Combine vectorizers
+    vectorizer = FeatureUnion([
+        ("char", char_vectorizer),
+        ("word", word_vectorizer)
+    ])
+
+    print("⚙️ Fitting TF-IDF vectorizer on training data...")
     X_train = vectorizer.fit_transform(train_texts)
-    print("Transforming test data with TF-IDF vectorizer...")
+    print("⚙️ Transforming test data...")
     X_test = vectorizer.transform(test_texts)
 
-    # Logistic Regression with class weight balanced
+    # Logistic Regression classifier with multithreaded solver
     clf = LogisticRegression(
-    max_iter=20000,
-    class_weight='balanced',
-    solver='liblinear',
-    C=0.5,
-    random_state=42
-)
+        solver='saga',
+        penalty='l2',  # Efficient and supports multi-threading
+        max_iter=1000,
+        class_weight='balanced',
+        C=1.0,
+        random_state=42,
+        multi_class='multinomial',
+        n_jobs=-1,
+        verbose=1  # Logs progress in terminal
+    )
 
-    # Training progress: scikit-learn doesn't give progress natively,
-    # but we can wrap fit in tqdm by splitting manually or just print before/after.
-    print("Training Logistic Regression model...")
-    clf.fit(X_train, train_labels)
-    print("Training completed.")
+    print("🚀 Training the model...")
+    start_time = time.time()
+    clf.fit(X_train, y_train)
+    end_time = time.time()
+    print(f"✅ Model training completed in {end_time - start_time:.2f} seconds.\n")
 
-    # Predict on test set
+    # Predict and evaluate
+    print("🔎 Evaluating model on test data...")
     preds = clf.predict(X_test)
+    acc = accuracy_score(y_test, preds)
+    print(f"🎯 Test Accuracy: {acc:.4f}\n")
 
-    # Evaluation
-    print(f"Test accuracy: {accuracy_score(test_labels, preds):.4f}")
-    print("Classification report:")
-    print(classification_report(test_labels, preds))
 
 if __name__ == "__main__":
     main()
