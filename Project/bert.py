@@ -5,31 +5,32 @@ from torch.utils.data import Dataset, DataLoader
 from transformers import BertTokenizer, BertForSequenceClassification, AdamW
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import LabelEncoder
+from utils import load_json_lines, encode_labels
 from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import numpy as np
 import argparse
 from tqdm import tqdm
-import re
 
-def clean_text(text):
-    # Remove non-ASCII junk characters (like emojis)
-    text = re.sub(r'[^\x00-\x7F]+', ' ', text)
-    text = re.sub(r'\s+', ' ', text).strip()
-    return text
 
-def load_data(file_path):
-    texts, labels = [], []
-    with open(file_path, 'r', encoding='utf-8') as f:
+def load_json_lines(filepath):
+    texts = []
+    labels = []
+    with open(filepath, 'r', encoding='utf-8') as f:
         for line in f:
-            if line.strip():
-                item = json.loads(line)
-                headline = clean_text(item['headline'])
-                short_desc = clean_text(item.get('short_description', ''))  # Use empty if missing
-                combined_text = headline + " " + short_desc
-                texts.append(combined_text.strip())
-                labels.append(item['category'])
+            try:
+                entry = json.loads(line)
+                headline = entry.get('headline', '')
+                description = entry.get('short_description', '')
+                label = entry.get('category')
+                if not label:
+                    continue  
+                combined_text = f"{headline} {description}"
+                texts.append(combined_text)
+                labels.append(label)
+            except json.JSONDecodeError:
+                continue     
     return texts, labels
 
 
@@ -43,7 +44,7 @@ def encode_labels(train_labels, test_labels):
     return train_encoded, test_encoded, label2id, id2label
 
 class NewsDataset(Dataset):
-    def __init__(self, texts, labels, tokenizer, max_len=512):
+    def __init__(self, texts, labels, tokenizer, max_len=128):
         self.texts = texts
         self.labels = labels
         self.tokenizer = tokenizer
@@ -70,12 +71,12 @@ class NewsDataset(Dataset):
             'labels': torch.tensor(label, dtype=torch.long)
         }
 
-def train_bert(train_file, test_file, model_dir='saved_bert_model', epochs=2, batch_size=16, max_len=512, lr=2e-5):
+def train_bert(train_file, test_file, model_dir='saved_bert_model', epochs=3, batch_size=16, max_len=128, lr=2e-5):
     print("Loading training data...")
-    train_texts, train_labels = load_data(train_file)
+    train_texts, train_labels = load_json_lines(train_file)
     print(f"Training articles: {len(train_texts)}")
     print("Loading test data...")
-    test_texts, test_labels = load_data(test_file)
+    test_texts, test_labels = load_json_lines(test_file)
     print(f"Testing articles: {len(test_texts)}")
 
     train_encoded, test_encoded, label2id, id2label = encode_labels(train_labels, test_labels)
@@ -103,11 +104,13 @@ def train_bert(train_file, test_file, model_dir='saved_bert_model', epochs=2, ba
     epoch_val_accuracies = []
 
     for epoch in range(epochs):
+        print(f"\n===== Epoch {epoch + 1}/{epochs} =====")
         model.train()
         total_loss = 0
+        total_examples = 0
 
-        loop = tqdm(enumerate(train_loader), total=len(train_loader), desc=f"Epoch {epoch+1}/{epochs}", ncols=100)
-        for step, batch in loop:
+        loop = tqdm(train_loader, desc="Training", ncols=100)
+        for batch in loop:
             optimizer.zero_grad()
             input_ids = batch['input_ids'].to(device, non_blocking=True)
             attention_mask = batch['attention_mask'].to(device, non_blocking=True)
@@ -117,22 +120,25 @@ def train_bert(train_file, test_file, model_dir='saved_bert_model', epochs=2, ba
                 outputs = model(input_ids, attention_mask=attention_mask, labels=labels)
                 loss = outputs.loss
 
-            total_loss += loss.item()
             scaler.scale(loss).backward()
             scaler.step(optimizer)
             scaler.update()
 
-            avg_loss_so_far = total_loss / (step + 1)
-            loop.set_postfix(loss=avg_loss_so_far)
+            batch_size = input_ids.size(0)
+            total_loss += loss.item() * batch_size
+            total_examples += batch_size
+            loop.set_postfix(avg_loss=total_loss / total_examples)
 
-        avg_loss = total_loss / len(train_loader)
-        print(f"Epoch {epoch+1}/{epochs} — Training loss: {avg_loss:.4f}")
+        avg_loss = total_loss / total_examples
+        print(f"Epoch {epoch + 1}/{epochs} — Training loss: {avg_loss:.4f}")
         epoch_train_losses.append(avg_loss)
 
         model.eval()
-        preds, true_labels = [], []
+        preds = []
+        true_labels = []
+
         with torch.no_grad():
-            for batch in test_loader:
+            for batch in tqdm(test_loader, desc="Validating", ncols=100):
                 input_ids = batch['input_ids'].to(device, non_blocking=True)
                 attention_mask = batch['attention_mask'].to(device, non_blocking=True)
                 labels = batch['labels'].to(device, non_blocking=True)
@@ -145,8 +151,9 @@ def train_bert(train_file, test_file, model_dir='saved_bert_model', epochs=2, ba
                 true_labels.extend(labels.cpu().numpy())
 
         acc = accuracy_score(true_labels, preds)
-        print(f"Epoch {epoch+1}/{epochs} — Validation accuracy: {acc:.4f}")
+        print(f"Epoch {epoch + 1}/{epochs} — Validation accuracy: {acc:.4f}")
         epoch_val_accuracies.append(acc)
+
 
     model.save_pretrained(model_dir)
     tokenizer.save_pretrained(model_dir)
