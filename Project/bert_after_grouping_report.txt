@@ -1,0 +1,29 @@
+Accuracy: 0.7824
+                     precision    recall  f1-score   support
+
+         ARTS_GROUP       0.65      0.63      0.64       366
+             COMEDY       0.61      0.48      0.54       545
+              CRIME       0.59      0.76      0.67       293
+ECONOMY_MEDIA_GROUP       0.69      0.62      0.65      1383
+    EDUCATION_GROUP       0.66      0.63      0.65       197
+      ENTERTAINMENT       0.74      0.86      0.79      1730
+        ENVIRONMENT       0.80      0.66      0.73       185
+              FIFTY       0.59      0.33      0.43        96
+          GOOD NEWS       0.37      0.52      0.43       143
+       HEALTH_GROUP       0.79      0.84      0.82      2587
+     IDENTITY_GROUP       0.82      0.71      0.76       851
+   LIFESTYLE_EVENTS       0.91      0.95      0.93       837
+    LIFESTYLE_GROUP       0.85      0.90      0.87      1129
+    MINORITY_VOICES       0.58      0.53      0.55       524
+    PARENTING_GROUP       0.89      0.73      0.80      1280
+             SPORTS       0.70      0.83      0.76       493
+         STEM_GROUP       0.58      0.61      0.60       355
+        STYLE_GROUP       0.88      0.86      0.87      1175
+             TRAVEL       0.83      0.90      0.86       996
+         WEIRD NEWS       0.46      0.41      0.43       257
+              WOMEN       0.59      0.41      0.49       342
+     WORLD_POLITICS       0.85      0.86      0.86      4470
+
+           accuracy                           0.78     20234
+          macro avg       0.70      0.68      0.69     20234
+       weighted avg       0.78      0.78      0.78     20234
