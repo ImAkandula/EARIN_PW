@@ -13,6 +13,7 @@ from sklearn.metrics import (
 )
 
 
+# --- Definicja grupowania etykiet ---
 def simplify_label(label):
     if label in {"POLITICS", "WORLD NEWS", "U.S. NEWS", "WORLDPOST", "THE WORLDPOST"}:
         return "WORLD_POLITICS"
@@ -20,27 +21,7 @@ def simplify_label(label):
         return "ARTS_GROUP"
     elif label in {"PARENTING", "PARENTS"}:
         return "PARENTING_GROUP"
-    elif label in {"STYLE", "STYLE & BEAUTY"}:
-        return "STYLE_GROUP"
-    elif label in {"RELIGION", "QUEER VOICES"}:
-        return "IDENTITY_GROUP"
-    elif label in {"WEDDINGS", "DIVORCE"}:
-        return "LIFESTYLE_EVENTS"
-    elif label in {"HEALTHY LIVING", "WELLNESS", "GREEN"}:
-        return "HEALTH_GROUP"
-    elif label in {"LATINO VOICES", "BLACK VOICES"}:
-        return "MINORITY_VOICES"
-    elif label in {"SCIENCE", "TECH"}:
-        return "STEM_GROUP"
-    elif label in {"HOME & LIVING", "TASTE", "FOOD & DRINK"}:
-        return "LIFESTYLE_GROUP"
-    elif label in {"COLLEGE", "EDUCATION"}:
-        return "EDUCATION_GROUP"
-    elif label in {"BUSINESS", "IMPACT", "MONEY", "MEDIA"}:
-        return "ECONOMY_MEDIA_GROUP"
-    else:
-        return label
-
+    return label
 
 
 def train_and_evaluate(X_train, y_train, X_test, y_test, label_names, out_prefix):
@@ -101,12 +82,14 @@ def main():
     X_train = vectorizer.fit_transform(train_texts)
     X_test = vectorizer.transform(test_texts)
 
+    # --- Wersja 1: bez grupowania ---
     print("\n--- MNB without label grouping ---")
     le_full = LabelEncoder()
     y_train_full = le_full.fit_transform(train_labels)
     y_test_full = le_full.transform(test_labels)
     train_and_evaluate(X_train, y_train_full, X_test, y_test_full, le_full.classes_, "1")
 
+    # --- Wersja 2: po uproszczeniu etykiet ---
     print("\n--- MNB with grouped labels ---")
     train_labels_grouped = [simplify_label(l) for l in train_labels]
     test_labels_grouped = [simplify_label(l) for l in test_labels]
